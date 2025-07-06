@@ -3,13 +3,15 @@ import torch.nn as nn
 import torch.optim as optim
 from src.data_loaders.dataloaders import get_dataloader
 from src.model_architecture.cnn_model import CustomCnnModel
-from src.config.constant import DEVICE, BATCH_SIZE, TRANSFORM, TRAIN_DIR, TEST_DIR, LEARNING_RATE, EPOCHS, CLASS_NAMES, INPUT_DIM, MODEL_PATH
+from src.config.constant import DEVICE, BATCH_SIZE, TRANSFORM, TRAIN_DIR, TEST_DIR, LEARNING_RATE, EPOCHS, CLASS_NAMES, INPUT_DIM, MODEL_PATH, CLASS_NAMES_PATH
+import json
 
 def train_model():
     device = DEVICE
     train_loader, test_loader = get_dataloader(TEST_DIR, TRAIN_DIR, TRANSFORM, BATCH_SIZE)
     num_classes = len(CLASS_NAMES)
-
+    with open (CLASS_NAMES_PATH, "w") as f:
+        json.dump(CLASS_NAMES, f)
     model = CustomCnnModel(INPUT_DIM, num_classes).to(device)
     
     criterion = nn.CrossEntropyLoss()
